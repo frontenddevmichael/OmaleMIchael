@@ -17,9 +17,6 @@ export function Experience() {
         <h2 id="exp-title" className="h2">
           Building since 2024.
         </h2>
-        <p className="exp-note">
-          One line, two threads: the things I picked up, and the places I picked them up in.
-        </p>
       </Reveal>
 
       <Reveal className="circuit-wrap">

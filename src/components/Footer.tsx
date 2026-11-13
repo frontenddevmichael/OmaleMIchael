@@ -102,9 +102,7 @@ export function Footer() {
           <Sparkle className="wordmark-spark" />
         </div>
 
-        <div className="wordmark-stage" aria-hidden="true">
-          <span className="wordmark">michael</span>
-        </div>
+        
       </Reveal>
     </footer>
   )

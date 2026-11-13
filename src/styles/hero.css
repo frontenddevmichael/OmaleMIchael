@@ -1,0 +1,472 @@
+/* ============================================================
+   Hero: giant wordmark, centred portrait, quiet notes
+   ============================================================ */
+
+.hero {
+  position: relative;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100svh - 76px);
+  padding: clamp(14px, 2.4svh, 34px) 0 clamp(18px, 3svh, 34px);
+  overflow: hidden;
+}
+
+/* top-left note */
+
+.hero-note {
+  position: relative;
+  z-index: 4;
+  width: max-content;
+  max-width: min(34ch, 72%);
+  margin-left: 7.9%;
+  color: var(--ink);
+  animation: heroRise 0.9s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Frontend + a rolling role beside it */
+.hero-role {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 0.24em;
+}
+
+.hero-role-lead {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.2vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.032em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.hero-role-roll {
+  display: inline-grid;
+  grid-template-areas: 'roll';
+  perspective: 760px;
+  font-family: var(--font-display);
+  font-size: clamp(25px, 2.6vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+  color: var(--ink-2);
+}
+
+.roll-word {
+  grid-area: roll;
+  justify-self: start;
+  opacity: 0;
+  transform: rotateX(-92deg);
+  transform-origin: 50% 100%;
+  transition: opacity 0.4s var(--ease), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  backface-visibility: hidden;
+  white-space: nowrap;
+}
+
+.roll-word.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+.roll-word.is-prev {
+  opacity: 0;
+  transform: rotateX(92deg);
+  transform-origin: 50% 0%;
+}
+
+.hero-note-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+}
+
+.hero-note-lines span {
+  font-size: clamp(15px, 1.15vw, 17.5px);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: var(--ink-2);
+}
+
+.hero-squiggle {
+  width: 58px;
+  margin-top: 14px;
+  color: var(--ink-3);
+}
+
+.hero-squiggle path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: squiggleDraw 1s 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* giant wordmark behind the portrait */
+
+.hero-word {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  z-index: 1;
+  animation: heroWordIn 1.25s 0.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: 18.3vw;
+  font-size: 18.3cqw;
+  font-weight: 800;
+  font-stretch: 100%;
+  font-variation-settings: 'wdth' 100, 'wght' 800;
+  line-height: 0.78;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+  pointer-events: none;
+  will-change: translate;
+}
+
+/* portrait, centred and cropped by the hero's bottom edge */
+
+.hero-figure {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 3;
+  height: min(84%, 760px);
+  width: auto;
+  aspect-ratio: 700 / 932;
+  transform: translateX(-50%);
+  pointer-events: none;
+  will-change: translate;
+  filter: drop-shadow(0 24px 30px rgba(11, 12, 14, 0.12));
+}
+
+/* The drawing's alpha is luminance based, so light areas are see-through.
+   This solid silhouette (masked to the same outline) sits behind it and hides
+   the wordmark, in the page colour so it stays invisible. */
+.figure-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--frame);
+  -webkit-mask-image: url('/images/portrait-mask.webp');
+  mask-image: url('/images/portrait-mask.webp');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  pointer-events: none;
+}
+
+.hero-figure img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  animation: heroPortraitIn 1.35s 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* bottom row */
+
+.hero-foot {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: auto;
+  padding-inline: 7.9%;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.6vw, 38px);
+  animation: heroRise 0.8s 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-link {
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: opacity 0.3s var(--ease);
+}
+
+.hero-link:hover {
+  opacity: 0.55;
+}
+
+.hero-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  text-align: left;
+  animation: heroRise 0.8s 0.78s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-side-place {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.hero-pin {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--ink-3);
+}
+
+/* decor */
+
+.hero-spark {
+  position: absolute;
+  z-index: 4;
+  top: 24%;
+  right: 6.5%;
+  width: 26px;
+  height: 26px;
+  color: var(--ink);
+  opacity: 0.55;
+  pointer-events: none;
+  will-change: translate;
+  animation: heroSparkIn 0.9s 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ---------- entrance ---------- */
+
+@keyframes heroWordIn {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    scale: 1.02;
+  }
+  to {
+    clip-path: inset(0 -2% 0 0);
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes heroPortraitIn {
+  from {
+    opacity: 0;
+    translate: 0 34px;
+    scale: 0.975;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    scale: 1;
+  }
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    translate: 0 26px;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+@keyframes heroSparkIn {
+  from {
+    opacity: 0;
+    scale: 0.5;
+    rotate: -25deg;
+  }
+  to {
+    opacity: 0.55;
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+@keyframes squiggleDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hero-spark svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- mobile ---------- */
+
+@media (max-width: 760px) {
+  .hero {
+    min-height: calc(100svh - 78px);
+    padding-top: 18px;
+  }
+
+  .hero-note {
+    max-width: 88%;
+    margin-left: 0;
+  }
+
+  .hero-role-lead {
+    font-size: clamp(26px, 7.4vw, 34px);
+  }
+
+  .hero-role-roll {
+    font-size: clamp(21px, 5.9vw, 27px);
+  }
+
+  .hero-note-lines span {
+    font-size: 15px;
+  }
+
+  .hero-word {
+    position: static;
+    transform: none;
+    align-self: center;
+    margin-top: clamp(18px, 5svh, 42px);
+    letter-spacing: -0.04em;
+  }
+
+  .hero-figure {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    height: auto;
+    width: min(74%, 310px);
+    margin: -6% auto 0;
+    transform: none;
+  }
+
+  .hero-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 18px 0 0;
+    margin-top: auto;
+  }
+
+  .hero-cta {
+    gap: 20px;
+  }
+
+  .hero-side {
+    font-size: 12.5px;
+  }
+
+  .hero-spark {
+    top: 19%;
+    right: 6%;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-word,
+  .hero-figure {
+    will-change: auto;
+  }
+
+  .hero-note,
+  .hero-word,
+  .hero-figure img,
+  .hero-cta,
+  .hero-side {
+    animation: none;
+    opacity: 1;
+    translate: none;
+    scale: 1;
+    clip-path: none;
+  }
+
+  .roll-word {
+    transition: none;
+  }
+
+  .hero-spark {
+    animation: none;
+    opacity: 0.55;
+    scale: 1;
+    rotate: 0deg;
+  }
+
+  .hero-squiggle path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+
+
+.hero-tools {
+    display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0; /* behind .hero-figure; adjust to your stacking */
+}
+
+.tool-sketch {
+  position: absolute;
+  height: auto;
+  color: #2b2b2b;
+  overflow: visible;
+  mix-blend-mode: multiply;
+  rotate: var(--r, 0deg);
+  animation: tool-float 7s ease-in-out calc(2s + var(--i, 0) * 0.3s) infinite;
+}
+
+.tool-sketch path,
+.tool-sketch circle,
+.tool-sketch line {
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sk-main .sk { stroke-width: 2.8; }
+.sk-main .sk-solid { fill: currentColor; stroke: none; }
+
+.sk-ghost {
+  opacity: 0.5;
+  transform: rotate(1.4deg) translate(1.5px, -1.5px);
+  transform-origin: 100px 100px;
+}
+.sk-ghost .sk { stroke-width: 1.3; fill: none; }
+.sk-ghost .sk-solid { display: none; }
+
+/* pencil draw-on */
+.sk {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: sk-draw 1.4s ease-out forwards;
+  animation-delay: calc(0.5s + var(--i, 0) * 0.18s);
+}
+.sk-ghost .sk { animation-delay: calc(0.75s + var(--i, 0) * 0.18s); }
+
+@keyframes sk-draw { to { stroke-dashoffset: 0; } }
+@keyframes tool-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+
+@media (max-width: 900px) {
+  .tool-sketch:nth-child(n + 4) { display: none; }
+}
+@media (max-width: 600px) {
+  .tool-sketch { width: 52px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk { animation: none; stroke-dashoffset: 0; }
+  .tool-sketch { animation: none; }
+}

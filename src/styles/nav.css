@@ -1,0 +1,128 @@
+/* ============================================================
+   Nav — links left, name centred, socials right
+   ============================================================ */
+
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding: clamp(14px, 1.8vw, 22px) 0 clamp(10px, 1.4vw, 16px);
+ 
+}
+
+.nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  min-height: 36px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 38px);
+  justify-self: start;
+ background-color: var(--surface-2);
+ padding: .8rem 3rem;
+
+ border-radius: 1rem;
+}
+
+.nav-link {
+  font-size: 14.5px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  transition: color 0.3s var(--ease);
+}
+
+.nav-link:hover {
+  color: var(--ink);
+}
+
+.nav-link.is-todo {
+  color: var(--ink-2);
+  cursor: default;
+  border-bottom: 1px dotted rgba(11, 12, 14, 0.35);
+  padding-bottom: 2px;
+}
+
+.nav-name {
+  justify-self: center;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.1vw, 30px);
+  font-weight: 700;
+  font-stretch: 100%;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.nav-social {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.9vw, 26px);
+  justify-self: end;
+}
+
+.nav-social-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  cursor: default;
+}
+
+.nav-social-item svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+
+@media (max-width: 760px) {
+  .nav {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'name name'
+      'links socials';
+    gap: 14px 16px;
+  }
+
+  .nav-name {
+    grid-area: name;
+    justify-self: center;
+    font-size: 22px;
+  }
+
+  .nav-links {
+    grid-area: links;
+    gap: 16px;
+  }
+
+  .nav-social {
+    grid-area: socials;
+    gap: 14px;
+  }
+
+  .nav-social-item {
+    gap: 0;
+  }
+
+  .nav-social-label {
+    display: none;
+  }
+
+  .nav-link {
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+  }
+}

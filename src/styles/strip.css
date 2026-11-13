@@ -1,0 +1,61 @@
+/* ============================================================
+   Credibility row
+   ============================================================ */
+
+.strip {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* the row itself stays put, the names stagger in */
+.strip.reveal {
+  opacity: 1;
+  translate: none;
+  transition: none;
+}
+
+.strip-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  translate: 0 14px;
+  transition: opacity 0.7s var(--ease), translate 0.7s var(--ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+.strip.is-in .strip-item {
+  opacity: 1;
+  translate: none;
+}
+
+.strip-name {
+  font-size: clamp(17px, 1.55vw, 23px);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.strip-detail {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+@media (max-width: 720px) {
+  .strip {
+    flex-direction: column;
+    gap: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strip-item {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+}

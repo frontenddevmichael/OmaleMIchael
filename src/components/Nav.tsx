@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useActiveSection } from '../lib/hooks'
+import { sectionClick } from '../lib/scroll'
 import { resume } from '../data/content'
 import { GitHubIcon, LinkedInIcon } from './icons'
 
@@ -22,6 +23,7 @@ export function Nav() {
           <a
             className={linkClass(projectsActive)}
             href={onHome ? '#projects' : '/#projects'}
+            onClick={onHome ? sectionClick : undefined}
             aria-current={projectsActive ? 'location' : undefined}
           >
             Projects
@@ -29,6 +31,7 @@ export function Nav() {
           <a
             className={linkClass(experienceActive)}
             href={onHome ? '#experience' : '/#experience'}
+            onClick={onHome ? sectionClick : undefined}
             aria-current={experienceActive ? 'location' : undefined}
           >
             Experience

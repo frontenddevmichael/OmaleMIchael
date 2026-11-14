@@ -12,7 +12,14 @@ import './styles/experience.css'
 import './styles/resume.css'
 import './styles/resume-page.css'
 import './styles/case.css'
+import './styles/study.css'
 import './styles/footer.css'
+
+// the browser would otherwise restore the previous scroll offset on reload,
+// dropping visitors into the middle of the page
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual'
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -4,15 +4,21 @@
 
 .footer {
   --footer-panel: #f4f4f1;
-  margin-top: clamp(64px, 7vw, 120px);
+  position: relative;
+  z-index: 6;
+  margin-top: calc(-1 * clamp(120px, 34vh, 340px));
   padding: 0 var(--page-x) clamp(14px, 2vw, 32px);
-  background: var(--frame);
+  /* transparent so the card, not a band, is what covers the resume */
+  background: transparent;
   color: var(--ink);
 }
 
+/* The card is the only thing that travels. The resume section above holds
+   still (it is the one pinned section) and the card slides up over it. */
 .footer-panel {
   --panel-x: clamp(22px, 8.8vw, 128px);
   position: relative;
+  z-index: 2;
   max-width: var(--max);
   margin-inline: auto;
   padding-block: clamp(30px, 4.6vw, 66px) clamp(16px, 2vw, 28px);

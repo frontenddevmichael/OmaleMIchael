@@ -7,7 +7,7 @@ export const profile = {
 
 export const credibility = [
   { name: 'CloudCrave', detail: 'Part-time contract developer' },
-  { name: 'Zelion', detail: 'Junior developer intern' },
+  { name: 'Zelion', detail: 'Developer intern' },
   { name: 'Bells University', detail: 'Computer Science and IT, class of 2029' },
 ]
 
@@ -17,65 +17,16 @@ export type Project = {
   year: string
   status: string
   lead?: boolean
-  summary: string
-  /** Unknown facts stay null so the UI can render a visible TODO. */
-  role: string | null
-  stack: string[] | null
-  decision: string | null
-  live: string | null
-  items?: string[]
-  private?: boolean
 }
 
+/** The folder deck, in the order it is read. Copy for each page lives in `src/content/work`. */
 export const projects: Project[] = [
-  {
-    slug: 'docket',
-    name: 'Docket',
-    year: '2026',
-    status: 'In progress',
-    lead: true,
-    summary:
-      'Turns screenshots and requirements into test cases you can trace back to where they came from.',
-    role: null,
-    stack: null,
-    decision: null,
-    live: null,
-  },
-  {
-    slug: 'calebs-library',
-    name: "Caleb's Library",
-    year: '2025',
-    status: 'In progress',
-    summary: 'A free library of notes and past questions for students at Bells University.',
-    role: null,
-    stack: null,
-    decision: null,
-    live: null,
-  },
-  {
-    slug: 'correr',
-    name: 'Correr',
-    year: '2026',
-    status: 'Beta',
-    summary: 'A coaching app built with Expo and Convex, with the AI kept on the server.',
-    role: null,
-    stack: ['Expo', 'Convex'],
-    decision: null,
-    live: null,
-  },
-  {
-    slug: 'zelion',
-    name: 'Zelion work',
-    year: '2026',
-    status: 'Private',
-    summary: 'Three pieces of client work, written up here without the code.',
-    role: null,
-    stack: null,
-    decision: null,
-    live: null,
-    private: true,
-    items: ['Admin page', 'Landing page refactor', 'Newsletter automation'],
-  },
+  { slug: 'docket', name: 'Docket', year: '2026', status: 'In progress', lead: true },
+  { slug: 'sketchroom', name: 'Sketchroom', year: '2026', status: 'Live' },
+  { slug: 'bells-notes', name: 'Bells Notes', year: '2025', status: 'Live' },
+  { slug: 'correr', name: 'Correr', year: '2026', status: 'Beta' },
+  { slug: 'zelion', name: 'Zelion work', year: '2026', status: 'Client work' },
+  { slug: 'chatbot-studio', name: 'ChatBot Studio', year: '2026', status: 'In progress' },
 ]
 
 export type TimelineEntry = {
@@ -126,7 +77,7 @@ export const timeline: TimelineEntry[] = [
   {
     when: '2026',
     title: 'Zelion',
-    detail: 'Junior developer intern.',
+    detail: 'Developer intern.',
     current: true,
     kind: 'work',
   },
@@ -181,7 +132,7 @@ export const resumeExperience: ResumeEntry[] = [
   {
     when: '2026',
     title: 'Zelion',
-    role: 'Junior developer intern',
+    role: 'Developer intern',
   },
 ]
 

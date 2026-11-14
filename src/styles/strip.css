@@ -1,15 +1,15 @@
 /* ============================================================
-   Credibility row
+   Credibility colophon — numbered cells on a hairline band
    ============================================================ */
 
 .strip {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid rgba(11, 12, 14, 0.16);
+  border-bottom: 1px solid rgba(11, 12, 14, 0.16);
 }
 
-/* the row itself stays put, the names stagger in */
+/* the band itself stays put, the cells rise into it */
 .strip.reveal {
   opacity: 1;
   translate: none;
@@ -17,11 +17,13 @@
 }
 
 .strip-item {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: baseline;
+  gap: clamp(12px, 1.6vw, 22px);
+  padding: clamp(16px, 2.1vw, 26px) 0 clamp(18px, 2.3vw, 28px);
   opacity: 0;
-  translate: 0 14px;
+  translate: 0 12px;
   transition: opacity 0.7s var(--ease), translate 0.7s var(--ease);
   transition-delay: calc(var(--i, 0) * 90ms);
 }
@@ -31,24 +33,75 @@
   translate: none;
 }
 
+/* hairlines between cells, drawn on the cell so the band stays one object */
+.strip-item + .strip-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: clamp(14px, 1.9vw, 24px);
+  bottom: clamp(16px, 2.1vw, 26px);
+  width: 1px;
+  background: rgba(11, 12, 14, 0.12);
+}
+
+.strip-item + .strip-item {
+  padding-left: clamp(16px, 2.2vw, 30px);
+}
+
+.strip-index {
+  flex: none;
+  padding-top: 2px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.strip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
 .strip-name {
-  font-size: clamp(17px, 1.55vw, 23px);
+  font-size: clamp(17px, 1.5vw, 22px);
   font-weight: 600;
   letter-spacing: -0.022em;
-  line-height: 1.2;
+  line-height: 1.15;
   color: var(--ink);
 }
 
 .strip-detail {
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.45;
   color: var(--ink-2);
 }
 
-@media (max-width: 720px) {
+/* ---------- narrow screens: the band turns into a list ---------- */
+
+@media (max-width: 760px) {
   .strip {
-    flex-direction: column;
-    gap: 18px;
+    grid-template-columns: 1fr;
+  }
+
+  .strip-item {
+    padding: 15px 0;
+  }
+
+  .strip-item + .strip-item {
+    padding-left: 0;
+  }
+
+  .strip-item + .strip-item::before {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+    background: rgba(11, 12, 14, 0.08);
   }
 }
 

@@ -87,15 +87,15 @@
   align-items: center;
   gap: 7px;
   min-width: 0;
-  font-size: clamp(11.5px, 0.85vw, 13px);
+  font-size: clamp(14.5px, 0.9vw, 16px);
   line-height: 1.2;
   color: var(--ink-2);
   transition: color 0.3s var(--ease), transform 0.3s var(--ease);
 }
 
 .footer-social svg {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   flex: none;
   color: var(--ink);
 }

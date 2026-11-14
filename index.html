@@ -20,11 +20,27 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- fonts load off the critical path: the request still starts immediately,
+         but the stylesheet no longer blocks first paint -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Hanken+Grotesk:wght@300..800&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Hanken+Grotesk:wght@300..800&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
-    <link rel="preload" as="image" href="/images/portrait.webp" />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Hanken+Grotesk:wght@300..800&display=swap"
+      />
+    </noscript>
+    <link
+      rel="preload"
+      as="image"
+      href="/images/portrait.webp"
+      imagesrcset="/images/portrait-340.webp 340w, /images/portrait.webp 700w"
+      imagesizes="(max-width: 900px) 74vw, 40vw"
+    />
   </head>
   <body>
     <div id="root"></div>

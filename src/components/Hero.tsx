@@ -189,6 +189,8 @@ export function Hero() {
         <span className="figure-fill" aria-hidden="true" />
         <img
           src="/images/portrait.webp"
+          srcSet="/images/portrait-340.webp 340w, /images/portrait.webp 700w"
+          sizes="(max-width: 900px) 74vw, 40vw"
           alt="Pencil portrait of Michael"
           width={700}
           height={932}

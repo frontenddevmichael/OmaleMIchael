@@ -12,6 +12,7 @@ import './styles/experience.css'
 import './styles/resume.css'
 import './styles/resume-page.css'
 import './styles/case.css'
+import './styles/study.css'
 import './styles/footer.css'
 
 createRoot(document.getElementById('root')!).render(

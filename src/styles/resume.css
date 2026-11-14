@@ -2,8 +2,20 @@
    Resume: a short paragraph and a paper object, not a facts list
    ============================================================ */
 
+/* The resume is the one section that holds still: it pins under the nav while
+   the footer card climbs over it, which is what reads as an overlay. */
 .resume {
-  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: clamp(16px, 2.2vw, 32px) 0 clamp(24px, 3vw, 42px);
+  background: var(--frame);
+}
+
+/* the scroll room the pin needs; sticky is bounded by the parent's content box */
+.pin-room {
+  height: clamp(340px, 74vh, 820px);
+  margin-top: calc(-1 * clamp(24px, 3vw, 44px));
 }
 
 .resume-grid {

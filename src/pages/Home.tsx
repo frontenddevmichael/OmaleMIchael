@@ -17,6 +17,7 @@ export default function Home() {
           <Work />
           <Experience />
           <ResumeSection />
+          <div className="pin-room" aria-hidden="true" />
         </main>
       </div>
       <Footer />

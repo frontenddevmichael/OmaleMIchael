@@ -31,7 +31,7 @@ function ProjectFolder({ project, index }: { project: Project; index: number }) 
           '--i': index,
         } as CSSProperties
       }
-      aria-label={`${project.name}, ${project.year}. ${project.status}. Open case study.`}
+      aria-label={`${project.name}, ${project.year}. ${project.status}.${project.lead ? ' Lead project.' : ''} Open case study.`}
     >
       <span className="folder-back-art" aria-hidden="true">
         <svg

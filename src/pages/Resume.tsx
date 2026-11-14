@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { Footer } from '../components/Footer'
 import { Nav } from '../components/Nav'
 import { Pin } from '../components/Decor'
 import { ChatIcon, GitHubIcon, LinkedInIcon, MailIcon, PhoneIcon } from '../components/icons'
@@ -152,7 +151,7 @@ export default function Resume() {
         </main>
       </div>
 
-      <Footer />
+    
     </>
   )
 }

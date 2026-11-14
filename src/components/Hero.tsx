@@ -1,6 +1,7 @@
 import { useEffect, useId, useState, type CSSProperties, type ReactNode } from 'react'
 import { profile } from '../data/content'
 import { useParallax } from '../lib/hooks'
+import { sectionClick } from '../lib/scroll'
 import { Pin, Sparkle, Squiggle } from './Decor'
 
 /* ---------- pencil-sketched tool marks (drawn natively as SVG) ---------- */
@@ -200,10 +201,10 @@ export function Hero() {
 
       <div className="hero-foot">
         <div className="hero-cta">
-          <a className="btn-solid" href="#projects">
+          <a className="btn-solid" href="#projects" onClick={sectionClick}>
             View work
           </a>
-          <a className="hero-link" href="#contact">
+          <a className="hero-link" href="#contact" onClick={sectionClick}>
             Get in touch
           </a>
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { resume } from '../data/content'
 import { ArrowUpRight, Sparkle } from './Decor'
 import { ChatIcon, GitHubIcon, LinkedInIcon, MailIcon, PhoneIcon } from './icons'
@@ -29,6 +29,19 @@ const explore = [
 
 export function Footer() {
   const [time, setTime] = useState(lagosTime)
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+
+  const goToSection = (id: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    const scroll = () => document.getElementById(id)?.scrollIntoView({ block: 'start' })
+    if (pathname === '/') {
+      scroll()
+      return
+    }
+    navigate('/')
+    window.requestAnimationFrame(scroll)
+  }
 
   useEffect(() => {
     const id = window.setInterval(() => setTime(lagosTime()), 30_000)
@@ -47,7 +60,12 @@ export function Footer() {
             <p className="footer-heading">Explore</p>
             {explore.map((item) =>
               item.href.startsWith('/#') ? (
-                <a className="footer-link" href={item.href} key={item.label}>
+                <a
+                  className="footer-link"
+                  href={item.href}
+                  key={item.label}
+                  onClick={goToSection(item.href.replace('/#', ''))}
+                >
                   {item.label}
                 </a>
               ) : (

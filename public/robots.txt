@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# No sitemap line until the production domain is fixed: a sitemap has to list
+# absolute URLs, and guessing the domain would point crawlers at the wrong host.

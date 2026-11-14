@@ -27,7 +27,7 @@ Small businesses want a chatbot but sit outside the market. Enterprise tools are
 
 ## My role
 
-Product architect and build orchestrator. I ran the competitive analysis that set the direction, prioritised the build across four tiers with an explicit list of what not to build, wrote the design system brief and the five-file prompt suite that drove OpenCode, and reviewed the result before each phase closed.
+Product architect and build orchestrator. I ran the competitive analysis that set the direction, prioritised the build across four tiers with an explicit list of what not to build, wrote the design and system brief , and reviewed the result before each phase closed.
 
 ## Key decisions
 

@@ -22,8 +22,7 @@ Goals fail quietly. A commitment made on Monday is forgotten by Thursday, and no
 
 ## My role
 
-Product architect and build orchestrator. I set the product scope and the constraints, wrote the prompts that drove the build, and reviewed each phase before the next one started. The app and its backend were produced with AI coding agents inside those constraints.
-
+Product architect and build orchestrator. I set the product scope and the constraints, drove the build, and reviewed each phase before the next one started. 
 ## Key decisions
 
 **AI keys live only on the server.** Every AI call runs in a Convex action, so the OpenRouter key never appears in an `EXPO_PUBLIC_` variable or in the client bundle.

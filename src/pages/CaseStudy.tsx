@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Nav } from '../components/Nav'
-import { Footer } from '../components/Footer'
 import { StudyHead } from '../components/study/StudyHead'
 import { StudySections } from '../components/study/StudySections'
 import { StudyGallery } from '../components/study/StudyGallery'
@@ -36,7 +35,7 @@ export default function CaseStudy() {
             </div>
           </main>
         </div>
-        <Footer />
+
       </>
     )
   }
@@ -69,7 +68,7 @@ export default function CaseStudy() {
         </main>
       </div>
 
-      <Footer />
+   
     </>
   )
 }

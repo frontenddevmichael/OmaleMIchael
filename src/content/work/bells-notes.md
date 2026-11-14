@@ -27,7 +27,7 @@ Course material at Bells University moves through group chats and folders that r
 
 ## My role
 
-Product architect and build orchestrator. I defined the library, the moderation model and the shared data contract, wrote the specifications and prompts, and directed the phased build through AI coding agents, reviewing and gating each stage.
+Product architect and build orchestrator. I built untop of an existing Google drive library, wrote the specifications and prompts, and directed the phased build through AI coding agents, reviewing and gating each stage.
 
 ## Key decisions
 

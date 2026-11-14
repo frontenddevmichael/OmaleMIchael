@@ -26,8 +26,7 @@ Planning sessions end as a photo of a whiteboard. Remote teams lose the thinking
 - Invites and roles, and a free tier metered per room and per AI suggestion.
 
 ## My role
-
-Product architect and build orchestrator. I wrote the design brief, the interface prompt and the OpenCode master prompt as separate documents, split the build into phases, and ran reviews between them. I set the rule that a major refactor needs confirmation before it starts and that nothing ships until it passes review. The implementation was produced by AI coding agents under those briefs and gates.
+Product architect, UI/UX designer and build orchestrator. I defined what Docket is and how it is put together, wrote the PRD and the input-expansion spec, decomposed the work into phases and directed AI agents  through them, then reviewed and gated what came back before it shipped. 
 
 ## Key decisions
 

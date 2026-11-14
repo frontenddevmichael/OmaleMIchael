@@ -30,8 +30,7 @@ Every generated case keeps a link back to the requirement or screen element that
 
 ## My role
 
-Product architect and build orchestrator. I defined what Docket is and how it is put together, wrote the PRD and the input-expansion spec, decomposed the work into phases and directed OpenCode through them, then reviewed and gated what came back before it shipped. The code was produced with AI agents under that direction, not typed line by line by me.
-
+Product architect, UI/UX designer and build orchestrator. I defined what Docket is and how it is put together, wrote the PRD and the input-expansion spec, decomposed the work into phases and directed AI agents  through them, then reviewed and gated what came back before it shipped. 
 ## Key decisions
 
 **The client talks to Supabase directly, with a narrow API for privileged work.** Most reads and writes go through row-level security. A small Express API verifies the user's JWT on every request and holds the service-role key only for AI generation, screenshots and workspace admin. Users get fast queries and the dangerous key never reaches the browser.

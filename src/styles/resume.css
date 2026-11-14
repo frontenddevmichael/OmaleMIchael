@@ -116,17 +116,19 @@
   transform: rotate(-1.2deg);
 }
 
-.resume-stack:hover .resume-sheet-front,
+/* the paper opens while the section is being read, and folds back on the way
+   out (the class is driven by the section's intersection observer) */
+.resume-stack.is-open .resume-sheet-front,
 .resume-stack:focus-visible .resume-sheet-front {
   transform: translateY(-8px) rotate(0deg);
   box-shadow: 0 40px 70px -30px rgba(11, 12, 14, 0.45);
 }
 
-.resume-stack:hover .resume-sheet-back {
+.resume-stack.is-open .resume-sheet-back {
   transform: translate(10px, 6px) rotate(4deg);
 }
 
-.resume-stack:hover .resume-sheet-back.is-far {
+.resume-stack.is-open .resume-sheet-back.is-far {
   transform: translate(-10px, 12px) rotate(-5deg);
 }
 
@@ -291,12 +293,12 @@
   transition: transform 0.4s var(--ease);
 }
 
-.resume-stack:hover .resume-paper-open svg,
+.resume-stack.is-open .resume-paper-open svg,
 .resume-stack:focus-visible .resume-paper-open svg {
   translate: 2px -2px;
 }
 
-.resume-stack:hover .resume-paper-badge,
+.resume-stack.is-open .resume-paper-badge,
 .resume-stack:focus-visible .resume-paper-badge {
   transform: rotate(-4deg);
 }

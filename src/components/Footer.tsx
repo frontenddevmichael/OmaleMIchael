@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { resume } from '../data/content'
 import { ArrowUpRight, Sparkle } from './Decor'
@@ -29,14 +29,48 @@ const explore = [
 
 export function Footer() {
   const [time, setTime] = useState(lagosTime)
+  const footerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const id = window.setInterval(() => setTime(lagosTime()), 30_000)
     return () => window.clearInterval(id)
   }, [])
 
+  // Only the card travels: as the footer comes up, the panel lifts by up to
+  // --lift and settles flush, so it rides over the section above it.
+  useEffect(() => {
+    const footer = footerRef.current
+    if (!footer) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const LIFT = 220
+    let frame = 0
+
+    const update = () => {
+      frame = 0
+      const rect = footer.getBoundingClientRect()
+      const travel = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / (window.innerHeight * 0.5)))
+      footer.style.setProperty('--lift', `${((1 - travel) * LIFT).toFixed(1)}px`)
+    }
+
+    const onScroll = () => {
+      if (frame) return
+      frame = window.requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
+
   return (
-    <footer id="contact" className="footer">
+    <footer id="contact" className="footer" ref={footerRef}>
       <Reveal className="footer-panel">
         <div className="footer-top">
           <nav

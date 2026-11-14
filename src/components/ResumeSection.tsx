@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { resume } from '../data/content'
 import { ArrowUpRight } from './Decor'
@@ -6,8 +7,33 @@ import { Reveal } from './Reveal'
 const sections = ['Experience', 'Education', 'Skills']
 
 export function ResumeSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const [inView, setInView] = useState(false)
+
+  // the paper fans out while the section is on screen and folds back when it
+  // leaves, so the movement belongs to the reading position
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const observer = new IntersectionObserver(
+      (entries) => setInView(entries.some((entry) => entry.isIntersecting)),
+      { threshold: 0.45 },
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section id="resume" className="resume" aria-labelledby="resume-title">
+    <section
+      id="resume"
+      className="resume"
+      aria-labelledby="resume-title"
+      ref={sectionRef}
+    >
       <Reveal className="resume-grid">
         <div className="resume-copy">
           <h2 id="resume-title" className="h2">
@@ -28,7 +54,11 @@ export function ResumeSection() {
           <p className="resume-meta">A4 · one page · print-ready</p>
         </div>
 
-        <Link className="resume-stack" to="/resume" aria-label="Open Michael's resume">
+        <Link
+          className={`resume-stack${inView ? ' is-open' : ''}`}
+          to="/resume"
+          aria-label="Open Michael's resume"
+        >
           <span className="resume-sheet resume-sheet-back is-far" aria-hidden="true" />
           <span className="resume-sheet resume-sheet-back" aria-hidden="true" />
 

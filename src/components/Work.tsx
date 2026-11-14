@@ -111,7 +111,7 @@ export function Work() {
       <Reveal className="work-head">
         <div>
           <h2 id="work-title" className="h2">
-            Things I&rsquo;ve built.
+            Products I&rsquo;ve built.
           </h2>
         </div>
         <span className="work-doodle-wrap" ref={doodleRef} aria-hidden="true">

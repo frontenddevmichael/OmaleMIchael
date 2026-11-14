@@ -7,7 +7,7 @@ export const profile = {
 
 export const credibility = [
   { name: 'CloudCrave', detail: 'Part-time contract developer' },
-  { name: 'Zelion', detail: 'Junior developer intern' },
+  { name: 'Zelion', detail: 'Developer intern' },
   { name: 'Bells University', detail: 'Computer Science and IT, class of 2029' },
 ]
 
@@ -77,7 +77,7 @@ export const timeline: TimelineEntry[] = [
   {
     when: '2026',
     title: 'Zelion',
-    detail: 'Junior developer intern.',
+    detail: 'Developer intern.',
     current: true,
     kind: 'work',
   },
@@ -132,7 +132,7 @@ export const resumeExperience: ResumeEntry[] = [
   {
     when: '2026',
     title: 'Zelion',
-    role: 'Junior developer intern',
+    role: 'Developer intern',
   },
 ]
 

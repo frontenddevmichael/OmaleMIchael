@@ -1,38 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 
-export type ResumeState = 'checking' | 'available' | 'missing'
-
-let resumeProbe: Promise<Exclude<ResumeState, 'checking'>> | null = null
-
-function probeResume() {
-  if (!resumeProbe) {
-    resumeProbe = fetch('/resume.pdf', { method: 'HEAD' })
-      .then((res) => {
-        const type = res.headers.get('content-type') ?? ''
-        return res.ok && type.includes('pdf') ? ('available' as const) : ('missing' as const)
-      })
-      .catch(() => 'missing' as const)
-  }
-  return resumeProbe
-}
-
-/** The resume PDF is optional; never render a link to a file that is not there. */
-export function useResumeAvailable(): ResumeState {
-  const [state, setState] = useState<ResumeState>('checking')
-
-  useEffect(() => {
-    let alive = true
-    probeResume().then((next) => {
-      if (alive) setState(next)
-    })
-    return () => {
-      alive = false
-    }
-  }, [])
-
-  return state
-}
-
 /**
  * Very light scroll parallax. Uses the standalone `translate` property so it
  * composes with any transform already on the element.
@@ -84,4 +51,53 @@ export function useParallax<T extends HTMLElement = HTMLElement>(speed = 0.08, r
   }, [speed, range])
 
   return ref
+}
+
+/** Tracks which page section is under the reading line, for nav highlighting. */
+export function useActiveSection(ids: readonly string[]): string | null {
+  const [active, setActive] = useState<string | null>(null)
+  const key = ids.join('|')
+
+  useEffect(() => {
+    const sections = key
+      .split('|')
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null)
+
+    if (!sections.length) {
+      setActive(null)
+      return
+    }
+
+    let frame = 0
+
+    const update = () => {
+      frame = 0
+      const line = window.innerHeight * 0.4
+      let next: string | null = null
+
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect()
+        if (rect.top <= line && rect.bottom > line) next = section.id
+      }
+
+      setActive(next)
+    }
+
+    const request = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', request, { passive: true })
+    window.addEventListener('resize', request)
+
+    return () => {
+      window.removeEventListener('scroll', request)
+      window.removeEventListener('resize', request)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [key])
+
+  return active
 }

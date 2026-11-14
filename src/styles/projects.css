@@ -1,5 +1,5 @@
 /* ============================================================
-   Work: folders, doodles, quiet aside
+   Work: stacked folders, doodles, quiet aside
    ============================================================ */
 
 .work {
@@ -26,15 +26,17 @@
   color: var(--ink-3);
 }
 
-/* ---------- folder stage ---------- */
+/* ---------- folder deck ---------- */
 
 .stage {
   position: relative;
   margin-top: clamp(34px, 4.4vw, 64px);
   display: flex;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  min-height: clamp(250px, 23vw, 320px);
+  padding-block: clamp(18px, 2.2vw, 30px);
+  min-height: clamp(240px, 24vw, 340px);
 }
 
 /* the container itself never fades, only the folders do */
@@ -44,175 +46,296 @@
   transition: none;
 }
 
-.stage-cursor {
-  position: absolute;
-  top: 2%;
-  right: 9%;
-  width: 18px;
-  height: 22px;
-  color: var(--ink-2);
-  opacity: 0.65;
-  transform: rotate(8deg);
-  pointer-events: none;
-}
-
 .folder {
+  --stack-x: 0px;
+  --stack-y: 0px;
   position: relative;
-  z-index: 1;
+  z-index: var(--z, 1);
   display: block;
-  flex: none;
-  width: clamp(158px, 17.5vw, 248px);
-  aspect-ratio: 1 / 1.04;
-  margin-inline: clamp(-30px, -2vw, -12px);
-  opacity: 0;
-  transform: translateY(var(--y, 0px)) rotate(var(--rot, 0deg));
+  width: clamp(220px, 26vw, 380px);
+  aspect-ratio: 320 / 236;
+  transform: translateX(var(--stack-x, 0px)) translateY(var(--stack-y, 0px))
+    rotate(var(--rot, 0deg));
   transition: transform 0.55s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 
 .stage.is-in .folder {
-  animation: rise 0.75s var(--ease) both;
-  animation-delay: calc(var(--i, 0) * 70ms);
+  animation: folder-in 0.8s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+.folder + .folder {
+  margin-left: clamp(-72px, -5vw, -40px);
+}
+
+.folder:nth-child(1) {
+  --stack-y: 14px;
+}
+
+.folder:nth-child(2) {
+  --stack-y: -10px;
+}
+
+.folder:nth-child(3) {
+  --stack-y: 10px;
+}
+
+.folder:nth-child(4) {
+  --stack-y: -14px;
 }
 
 .folder:hover,
 .folder:focus-visible {
-  z-index: 6;
-  transform: translateY(calc(var(--y, 0px) - 6px)) rotate(var(--rot, 0deg));
+  z-index: calc(var(--z, 1) + 20);
+  transform: translateX(var(--stack-x, 0px)) translateY(calc(var(--stack-y, 0px) - 7px))
+    rotate(var(--rot, 0deg)) scale(1.006);
 }
 
-.folder-back {
+.folder:focus-visible {
+  outline-offset: 8px;
+  border-radius: 18px;
+}
+
+/* ---------- folder shapes ---------- */
+
+.folder-back-art,
+.folder-front-art,
+.folder-svg {
   position: absolute;
   inset: 0;
-  border-radius: 20px;
-  background: linear-gradient(158deg, rgba(255, 255, 255, 0.78), rgba(238, 238, 235, 0.5));
-  backdrop-filter: blur(16px) saturate(112%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 26px 44px -34px rgba(11, 12, 14, 0.5);
+  width: 100%;
+  height: 100%;
 }
 
-.folder-year {
-  position: absolute;
-  right: 14px;
-  bottom: 10px;
-  font-size: clamp(34px, 3.6vw, 52px);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: rgba(11, 12, 14, 0.1);
-  line-height: 1;
+.folder-svg {
+  overflow: visible;
 }
 
-.folder-tab {
-  position: absolute;
-  top: -11px;
-  left: 20px;
-  width: 46%;
-  height: 24px;
-  border-radius: 11px 11px 0 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(250, 250, 249, 0.58));
-  backdrop-filter: blur(14px) saturate(110%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+.folder-back-art {
+  z-index: 1;
+  filter: drop-shadow(0 22px 32px rgba(11, 12, 14, 0.16));
 }
 
-.folder-lid {
+.folder-cover {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 73%;
+  inset: 0;
+  z-index: 3;
+  transition: transform 0.55s var(--ease);
+}
+
+.folder-front-art {
+  z-index: 1;
+  filter: drop-shadow(0 16px 24px rgba(11, 12, 14, 0.16));
+  transition: filter 0.55s var(--ease);
+}
+
+.folder:hover .folder-cover,
+.folder:focus-visible .folder-cover {
+  transform: translateY(-5px);
+}
+
+.folder:hover .folder-front-art,
+.folder:focus-visible .folder-front-art {
+  filter: drop-shadow(0 26px 34px rgba(11, 12, 14, 0.22));
+}
+
+/* the year lives on the folder tab */
+.folder-tab-word {
+  position: absolute;
+  left: 11.5%;
+  top: 0;
+  z-index: 2;
+  height: 12.2%;
+  display: flex;
+  align-items: center;
+  font-size: clamp(10px, 0.85vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--ink-2);
+  pointer-events: none;
+  transition: color 0.45s var(--ease);
+}
+
+.folder:hover .folder-tab-word,
+.folder:focus-visible .folder-tab-word {
+  color: var(--ink);
+}
+
+/* ---------- text on the cover ---------- */
+
+.folder-content {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 36%;
+  z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 16px 18px 18px;
-  border-radius: 18px 18px 20px 20px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(245, 245, 243, 0.62));
-  backdrop-filter: blur(18px) saturate(115%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(11, 12, 14, 0.04),
-    0 -14px 28px -22px rgba(11, 12, 14, 0.35);
-  transition: transform 0.55s var(--ease), box-shadow 0.55s var(--ease);
-}
-
-.folder:hover .folder-lid,
-.folder:focus-visible .folder-lid {
-  transform: translateY(-7px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.98), inset 0 -1px 0 rgba(11, 12, 14, 0.04),
-    0 -18px 30px -20px rgba(11, 12, 14, 0.35);
+  align-items: flex-start;
+  gap: clamp(7px, 0.9vw, 12px);
+  pointer-events: none;
 }
 
 .folder-name {
-  font-size: clamp(13px, 1.05vw, 15px);
+  max-width: 86%;
+  font-size: clamp(22px, 2.05vw, 30px);
   font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  color: var(--ink);
+  transition: translate 0.45s var(--ease);
 }
 
-.folder-foot {
+.folder:hover .folder-name,
+.folder:focus-visible .folder-name {
+  translate: 0 -2px;
+}
+
+.folder-meta {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 11.5px;
+  gap: clamp(9px, 1.2vw, 14px);
+}
+
+.folder-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: clamp(10px, 0.82vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--ink-2);
 }
 
-.folder-arrow {
-  font-size: 13px;
-  transition: transform 0.4s var(--ease);
+.folder-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ink);
+  flex: none;
 }
 
-.folder:hover .folder-arrow {
-  transform: translateX(3px);
-}
-
-.folder.is-lead .folder-name::after {
-  content: 'lead';
-  display: inline-block;
-  margin-left: 7px;
-  padding: 1px 6px;
-  border-radius: 5px;
+.folder-lead {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
   background: var(--ink);
   color: var(--band-ink);
-  font-size: 9px;
-  letter-spacing: 0.06em;
-  vertical-align: 2px;
+  font-size: clamp(8.5px, 0.7vw, 10px);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.folder-arrow {
+  flex: none;
+  width: clamp(28px, 2.6vw, 38px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 8px 16px -12px rgba(11, 12, 14, 0.45);
+  transition: background-color 0.45s var(--ease), color 0.45s var(--ease),
+    transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+.folder-arrow svg {
+  width: 15px;
+  height: 15px;
+}
+
+.folder:hover .folder-arrow,
+.folder:focus-visible .folder-arrow {
+  background: var(--ink);
+  color: var(--band-ink);
+  transform: translate(2px, -2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 12px 20px -14px rgba(11, 12, 14, 0.7);
+}
+
+/* ---------- entrance ---------- */
+
+@keyframes folder-in {
+  from {
+    opacity: 0;
+    translate: 0 26px;
+    scale: 0.985;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+    scale: 1;
+  }
 }
 
 /* ---------- small screens ---------- */
 
 @media (max-width: 860px) {
   .stage {
-    display: block;
+    flex-direction: column;
+    align-items: center;
     min-height: 0;
-    padding-top: 18px;
+    padding-top: 26px;
+    padding-bottom: 0;
   }
 
   .folder {
-    width: calc(50% - 10px);
-    aspect-ratio: 1 / 1.02;
-    margin: 0 0 24px;
-    display: inline-block;
-    vertical-align: top;
-    transform: rotate(var(--rot, 0deg));
+    width: min(94%, 460px);
+  }
+
+  .folder + .folder {
+    margin-top: clamp(-96px, -10vw, -62px);
+    margin-left: 0;
   }
 
   .folder:nth-child(odd) {
-    margin-right: 12px;
+    --stack-x: calc(-1 * clamp(10px, 2vw, 26px));
+    --stack-y: 0px;
   }
 
-  .folder:hover,
-  .folder:focus-visible {
-    transform: rotate(var(--rot, 0deg));
+  .folder:nth-child(even) {
+    --stack-x: clamp(10px, 2vw, 26px);
+    --stack-y: 0px;
   }
 
-  .stage-cursor,
+  .folder-content {
+    top: 35%;
+    gap: 7px;
+  }
+
+  .folder-name {
+    font-size: clamp(27px, 7vw, 36px);
+  }
+
+  .folder-arrow {
+    margin-left: auto;
+  }
+
+  .folder-status {
+    font-size: 11px;
+  }
+
+  .folder-tab-word {
+    font-size: 11px;
+  }
+
+  .folder-arrow {
+    width: 32px;
+  }
+
+  .folder-lead {
+    font-size: 9.5px;
+  }
+
   .work-doodle-wrap {
     display: none;
-  }
-}
-
-@media (max-width: 335px) {
-  .folder {
-    width: 100%;
-    margin-right: 0;
   }
 }
 
@@ -220,5 +343,30 @@
   .folder {
     opacity: 1;
     animation: none !important;
+  }
+
+  .folder,
+  .folder-cover,
+  .folder-name,
+  .folder-arrow,
+  .folder-front-art,
+  .folder-tab-word {
+    transition: none;
+  }
+
+  .folder:hover,
+  .folder:focus-visible {
+    transform: translateX(var(--stack-x, 0px)) translateY(var(--stack-y, 0px))
+      rotate(var(--rot, 0deg));
+  }
+
+  .folder:hover .folder-cover,
+  .folder:focus-visible .folder-cover,
+  .folder:hover .folder-name,
+  .folder:focus-visible .folder-name,
+  .folder:hover .folder-arrow,
+  .folder:focus-visible .folder-arrow {
+    transform: none;
+    translate: none;
   }
 }

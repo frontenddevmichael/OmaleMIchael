@@ -1,5 +1,5 @@
 /* ============================================================
-   Resume: a short paragraph and the facts, ruled like a sheet
+   Resume: a short paragraph and a paper object, not a facts list
    ============================================================ */
 
 .resume {
@@ -8,18 +8,18 @@
 
 .resume-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
-  gap: clamp(32px, 5vw, 84px);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: clamp(36px, 5vw, 84px);
+  align-items: center;
 }
 
 .resume-copy h2 {
   max-width: 14ch;
 }
 
-.resume-copy p {
+.resume-lede {
   margin-top: 18px;
-  max-width: 44ch;
+  max-width: 36ch;
   font-size: clamp(15px, 1.1vw, 17px);
   line-height: 1.65;
   color: var(--ink-2);
@@ -46,42 +46,259 @@
   opacity: 0.55;
 }
 
-/* ---------- the facts ---------- */
-
-.resume-facts {
-  display: grid;
-  margin: 0;
-  border-top: 1px solid rgba(11, 12, 14, 0.14);
-}
-
-.resume-facts > div {
-  display: grid;
-  grid-template-columns: clamp(112px, 11vw, 140px) minmax(0, 1fr);
-  gap: 16px;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(11, 12, 14, 0.1);
-}
-
-.resume-facts dt {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding-top: 2px;
-  font-size: 13px;
+.resume-meta {
+  margin-top: 20px;
+  font-size: 10.5px;
   font-weight: 600;
-  color: var(--ink);
-}
-
-.resume-icon {
-  flex: none;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--ink-3);
 }
 
-.resume-facts dd {
-  margin: 0;
-  font-size: clamp(13.5px, 1.02vw, 15px);
-  line-height: 1.5;
+/* ---------- the paper stack ---------- */
+
+.resume-stack {
+  position: relative;
+  display: block;
+  width: min(100%, 380px);
+  aspect-ratio: 0.72;
+  margin-inline: auto;
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.resume-grid.is-in .resume-stack {
+  animation: rise 0.9s var(--ease) both;
+  animation-delay: 0.1s;
+}
+
+.resume-stack:focus-visible {
+  outline: none;
+}
+
+.resume-stack:focus-visible .resume-sheet-front {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.resume-sheet {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  border: 1px solid rgba(11, 12, 14, 0.1);
+  transition:
+    transform 0.6s var(--ease),
+    box-shadow 0.6s var(--ease);
+}
+
+.resume-sheet-back {
+  z-index: 1;
+  background: #f4f4f0;
+  box-shadow: 0 20px 40px -30px rgba(11, 12, 14, 0.35);
+  transform: translate(-4px, 4px) rotate(-2deg);
+}
+
+.resume-sheet-back.is-far {
+  z-index: 0;
+  background: #edede9;
+  box-shadow: 0 18px 36px -30px rgba(11, 12, 14, 0.3);
+  transform: translate(6px, 8px) rotate(3deg);
+}
+
+.resume-sheet-front {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(18px, 2.2vw, 26px);
+  background: #fcfcfa;
+  box-shadow: 0 30px 60px -32px rgba(11, 12, 14, 0.4);
+  transform: rotate(-1.2deg);
+}
+
+.resume-stack:hover .resume-sheet-front,
+.resume-stack:focus-visible .resume-sheet-front {
+  transform: translateY(-8px) rotate(0deg);
+  box-shadow: 0 40px 70px -30px rgba(11, 12, 14, 0.45);
+}
+
+.resume-stack:hover .resume-sheet-back {
+  transform: translate(10px, 6px) rotate(4deg);
+}
+
+.resume-stack:hover .resume-sheet-back.is-far {
+  transform: translate(-10px, 12px) rotate(-5deg);
+}
+
+/* ---------- the miniature sheet ---------- */
+
+.resume-paper-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(11, 12, 14, 0.12);
+}
+
+.resume-paper-kicker {
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.resume-paper-year {
+  font-size: 10px;
   color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.resume-paper-id {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(12px, 1.4vw, 18px);
+  margin-top: clamp(16px, 2vw, 24px);
+}
+
+.resume-paper-photo {
+  position: relative;
+  flex: none;
+  width: 30%;
+  max-width: 96px;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.resume-paper-fill {
+  position: absolute;
+  inset: 0;
+  background: #fcfcfa;
+  -webkit-mask-image: url('/images/portrait-mask.webp');
+  mask-image: url('/images/portrait-mask.webp');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.resume-paper-photo img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+
+.resume-paper-who {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding-bottom: 2px;
+}
+
+.resume-paper-name {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 30px);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 100, 'wght' 800;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.resume-paper-role {
+  font-size: clamp(8px, 0.7vw, 9.5px);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.resume-paper-body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.2vw, 14px);
+}
+
+.resume-paper-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.resume-paper-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.resume-paper-rule {
+  height: 1px;
+  background: rgba(11, 12, 14, 0.12);
+}
+
+.resume-paper-rule.is-short {
+  width: 62%;
+}
+
+.resume-paper-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(11, 12, 14, 0.12);
+}
+
+.resume-paper-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.resume-paper-open svg {
+  width: 11px;
+  height: 11px;
+  transition: translate 0.4s var(--ease);
+}
+
+.resume-paper-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  padding: 0 8px;
+  background: var(--ink);
+  color: var(--band-ink);
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  transition: transform 0.4s var(--ease);
+}
+
+.resume-stack:hover .resume-paper-open svg,
+.resume-stack:focus-visible .resume-paper-open svg {
+  translate: 2px -2px;
+}
+
+.resume-stack:hover .resume-paper-badge,
+.resume-stack:focus-visible .resume-paper-badge {
+  transform: rotate(-4deg);
 }
 
 /* ---------- small screens ---------- */
@@ -89,15 +306,45 @@
 @media (max-width: 860px) {
   .resume-grid {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 36px;
+    align-items: start;
   }
 
   .resume-copy h2 {
     max-width: none;
   }
 
-  .resume-facts > div {
-    grid-template-columns: 116px minmax(0, 1fr);
-    gap: 14px;
+  .resume-lede {
+    max-width: 44ch;
+  }
+
+  .resume-stack {
+    width: min(100%, 330px);
+  }
+}
+
+@media (max-width: 560px) {
+  .resume-stack {
+    width: min(100%, 290px);
+  }
+
+  .resume-paper-name {
+    font-size: 22px;
+  }
+
+  .resume-paper-role {
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resume-grid.is-in .resume-stack {
+    animation: none;
+  }
+
+  .resume-sheet,
+  .resume-paper-open svg,
+  .resume-paper-badge {
+    transition: none;
   }
 }

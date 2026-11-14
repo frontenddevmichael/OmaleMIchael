@@ -1,108 +1,141 @@
-import type { CSSProperties } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
-import { useParallax } from '../lib/hooks'
-import { ArrowUpRight, Pin, SketchCircle, Sparkle } from './Decor'
 import { resume } from '../data/content'
-import { GitHubIcon, LinkedInIcon } from './icons'
+import { ArrowUpRight, Sparkle } from './Decor'
+import { ChatIcon, GitHubIcon, LinkedInIcon, MailIcon, PhoneIcon } from './icons'
 import { Reveal } from './Reveal'
 
+/** 09164300395 also works on WhatsApp, so the international form is built from the phone. */
+const phoneDigits = resume.phone.replace(/\D/g, '')
+const phoneIntl = `234${phoneDigits.replace(/^0/, '')}`
+const whatsappHref = `https://wa.me/${phoneIntl}`
+
+function lagosTime() {
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Africa/Lagos',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
+    .format(new Date())
+    .replace(/\u202f/g, ' ')
+}
+
+const explore = [
+  { label: 'Work', href: '/#projects' },
+  { label: 'Experience', href: '/#experience' },
+  { label: 'Resume', href: '/resume' },
+]
+
 export function Footer() {
-  const circleRef = useParallax<HTMLSpanElement>(-0.09, 56)
+  const [time, setTime] = useState(lagosTime)
+
+  useEffect(() => {
+    const id = window.setInterval(() => setTime(lagosTime()), 30_000)
+    return () => window.clearInterval(id)
+  }, [])
 
   return (
     <footer id="contact" className="footer">
-      <div className="band">
-        <span className="band-circle" ref={circleRef}>
-          <SketchCircle />
-        </span>
+      <Reveal className="footer-panel">
+        <div className="footer-top">
+          <nav
+            className="footer-col footer-explore"
+            aria-label="Footer"
+            style={{ '--i': 0 } as CSSProperties}
+          >
+            <p className="footer-heading">Explore</p>
+            {explore.map((item) =>
+              item.href.startsWith('/#') ? (
+                <a className="footer-link" href={item.href} key={item.label}>
+                  {item.label}
+                </a>
+              ) : (
+                <Link className="footer-link" to={item.href} key={item.label}>
+                  {item.label}
+                </Link>
+              ),
+            )}
+          </nav>
 
-        <Reveal className="band-inner">
-          <h2 className="band-headline">
-            Let&rsquo;s work <strong>together</strong>.
-          </h2>
+          <div className="footer-col footer-follow" style={{ '--i': 1 } as CSSProperties}>
+            <p className="footer-heading">Follow me</p>
 
-          <div className="band-cta">
-            <p className="band-line">
-              Tell me what you&rsquo;re building, and I&rsquo;ll tell you how I&rsquo;d approach it.
-            </p>
-
-            <div className="band-actions">
+            <div className="footer-socials">
               <a
-                className="band-button"
-                href={`mailto:${resume.email}?subject=${encodeURIComponent('Let us work together')}`}
+                className="footer-social"
+                href={resume.linkedin}
+                target="_blank"
+                rel="noreferrer"
               >
-                Email me
-                <ArrowUpRight />
+                <LinkedInIcon />
+                <span>LinkedIn</span>
+              </a>
+
+              <a className="footer-social" href={resume.github} target="_blank" rel="noreferrer">
+                <GitHubIcon />
+                <span>GitHub</span>
+              </a>
+
+              <a className="footer-social" href={`mailto:${resume.email}`}>
+                <MailIcon />
+                <span>Email</span>
+              </a>
+
+              <a
+                className="footer-social"
+                href={whatsappHref}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <ChatIcon />
+                <span>WhatsApp</span>
               </a>
             </div>
           </div>
-        </Reveal>
 
-        <Sparkle className="band-spark" />
-      </div>
-
-      <Reveal className="footer-body">
-        <div className="footer-grid">
-          <nav className="footer-col" aria-label="Footer" style={{ '--i': 0 } as CSSProperties}>
-            <p className="footer-title">Around here</p>
-            <a className="footer-link" href="/#projects">
-              Work
-            </a>
-            <a className="footer-link" href="/#experience">
-              Experience
-            </a>
-            <Link className="footer-link" to="/resume">
-              Resume
-            </Link>
-            <a className="footer-link" href="#hero">
-              Back to top
-            </a>
-          </nav>
-
-          <div className="footer-col" style={{ '--i': 1 } as CSSProperties}>
-            <p className="footer-title">Elsewhere</p>
-            <a className="footer-social" href={resume.linkedin} target="_blank" rel="noreferrer">
-              <LinkedInIcon />
-              LinkedIn
-            </a>
-            <a className="footer-social" href={resume.github} target="_blank" rel="noreferrer">
-              <GitHubIcon />
-              GitHub
-            </a>
-            <a className="footer-social" href={`mailto:${resume.email}`}>
-              <span className="footer-at" aria-hidden="true">
-                @
+          <div className="footer-touch" style={{ '--i': 2 } as CSSProperties}>
+            <a className="footer-call" href={`tel:+${phoneIntl}`}>
+              <span className="footer-call-label">Call Michael</span>
+              <span className="footer-call-icon" aria-hidden="true">
+                <PhoneIcon />
               </span>
-              Email
             </a>
-          </div>
+            <p className="footer-note">Let&rsquo;s work together</p>
 
-          <div className="footer-col" style={{ '--i': 2 } as CSSProperties}>
-            <p className="footer-title">Details</p>
-            <p className="footer-place">
-              <Pin className="footer-pin" />
-              Lagos, Nigeria
-            </p>
-            <p className="footer-muted">GMT +1</p>
-            <a className="footer-link" href="tel:+2349164300395">
-              +2349164300395
+            <a
+              className="footer-chat"
+              href={whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="footer-chat-label">Chat me on WhatsApp</span>
+              <span className="footer-chat-icon" aria-hidden="true">
+                <ArrowUpRight />
+              </span>
             </a>
+            <p className="footer-note">Let&rsquo;s talk</p>
           </div>
+        </div>
+
+        <div className="footer-mark-wrap" aria-hidden="true">
+          <span className="footer-mark">michael</span>
         </div>
 
         <div className="footer-base">
-          <p>&copy; 2026 Michael Omale</p>
-          <p>Designed and built by me, in Lagos.</p>
-        </div>
-      </Reveal>
+          <div className="footer-base-left">
+            <p>Michael &copy;2026</p>
+            <a href={`mailto:${resume.email}`}>Say hello</a>
+          </div>
 
-      <Reveal className="wordmark-wrap">
-        <div className="wordmark-top" aria-hidden="true">
-          <span className="wordmark-rule" />
-          <Sparkle className="wordmark-spark" />
+          <div className="footer-base-right">
+            <span>Lagos, Nigeria</span>
+            <span className="footer-dot" aria-hidden="true" />
+            <span className="footer-time">{time}</span>
+            <span className="footer-zone">WAT</span>
+            <Sparkle className="footer-base-mark" />
+          </div>
         </div>
-
-        
       </Reveal>
     </footer>
   )

@@ -1,8 +1,31 @@
 import type { CSSProperties } from 'react'
-import { timeline } from '../data/content'
+import { timeline, type TimelineEntry } from '../data/content'
 import { useParallax } from '../lib/hooks'
 import { Asterisk, Book, Briefcase } from './Decor'
 import { Reveal } from './Reveal'
+
+type YearGroup = {
+  when: string
+  entries: TimelineEntry[]
+  current: boolean
+}
+
+const years = timeline.reduce<YearGroup[]>((groups, entry) => {
+  const last = groups[groups.length - 1]
+
+  if (last && last.when === entry.when) {
+    last.entries.push(entry)
+    last.current = last.current || Boolean(entry.current)
+  } else {
+    groups.push({
+      when: entry.when,
+      entries: [entry],
+      current: Boolean(entry.current),
+    })
+  }
+
+  return groups
+}, [])
 
 export function Experience() {
   const markRef = useParallax<HTMLSpanElement>(0.12, 36)
@@ -19,43 +42,41 @@ export function Experience() {
         </h2>
       </Reveal>
 
-      <Reveal className="circuit-wrap">
-        <div className="circuit">
-          <span className="circuit-trace" aria-hidden="true" />
+      <Reveal className="exp-ledger-wrap">
+        <div className="exp-ledger">
+          {years.map((group, groupIndex) => (
+            <div
+              className={`exp-year${group.current ? ' is-current' : ''}`}
+              key={group.when}
+              style={{ '--i': groupIndex } as CSSProperties}
+            >
+              <div className="exp-year-head">
+                <h3 className="exp-year-num">{group.when}</h3>
+                {group.current ? <span className="exp-now">Now</span> : null}
+              </div>
 
-          <ol className="circuit-stops">
-            {timeline.map((entry, index) => {
-              const opensYear = index === 0 || timeline[index - 1].when !== entry.when
-
-              return (
-                <li
-                  className={`stop ${index % 2 === 0 ? 'is-above' : 'is-below'}${
-                    entry.current ? ' is-now' : ''
-                  }`}
-                  key={`${entry.when}-${entry.title}`}
-                  style={{ '--i': index } as CSSProperties}
-                >
-                  <span className="stop-pad" aria-hidden="true" />
-                  <span className="stop-leg" aria-hidden="true" />
-
-                  <div className="stop-body">
-                    <p className="stop-year">{opensYear ? entry.when : '\u00A0'}</p>
-
-                    <h3 className="stop-title">
-                      {entry.kind ? (
-                        <span className="stop-icon" aria-hidden="true">
-                          {entry.kind === 'school' ? <Book /> : <Briefcase />}
-                        </span>
-                      ) : null}
-                      {entry.title}
-                    </h3>
-
-                    {entry.detail ? <p className="stop-desc">{entry.detail}</p> : null}
-                  </div>
-                </li>
-              )
-            })}
-          </ol>
+              <ul className="exp-list">
+                {group.entries.map((entry, entryIndex) => (
+                  <li
+                    className="exp-entry"
+                    key={`${entry.when}-${entry.title}`}
+                    style={{ '--i': entryIndex } as CSSProperties}
+                  >
+                    <span className="exp-entry-icon" aria-hidden="true">
+                      {entry.kind === 'school' ? (
+                        <Book />
+                      ) : entry.kind === 'work' ? (
+                        <Briefcase />
+                      ) : (
+                        <span className="exp-entry-dot" />
+                      )}
+                    </span>
+                    <span className="exp-entry-title">{entry.title}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </Reveal>
     </section>

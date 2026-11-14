@@ -1,5 +1,5 @@
 /* ============================================================
-   Experience: a horizontal circuit, one pad per entry
+   Experience: a three-year ledger, one column per year
    ============================================================ */
 
 .exp {
@@ -25,309 +25,282 @@
   width: 100%;
 }
 
-.exp-note {
-  max-width: 44ch;
-  margin-inline: auto;
-  font-size: clamp(15px, 1.1vw, 17px);
-  line-height: 1.6;
-  color: var(--ink-2);
-}
+/* ---------- ledger ---------- */
 
-/* ---------- board ---------- */
-
-.circuit-wrap {
+.exp-ledger-wrap {
   margin-top: clamp(42px, 5vw, 76px);
 }
 
-.circuit-wrap.reveal {
+.exp-ledger-wrap.reveal {
   opacity: 1;
   translate: none;
   transition: none;
 }
 
-.circuit {
-  position: relative;
-  height: clamp(380px, 28vw, 440px);
-}
-
-/* the trace, and the current running along it */
-
-.circuit-trace {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 1px;
-  background: rgba(11, 12, 14, 0.2);
-}
-
-.circuit-trace::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(11, 12, 14, 0.5) 0 7px,
-    transparent 7px 46px
-  );
-  background-size: 46px 1px;
-  background-repeat: repeat-x;
-  animation: traceFlow 5.5s linear infinite;
-}
-
-/* the trace turns down at both ends, like a board edge */
-
-.circuit::before,
-.circuit::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 1px;
-  height: 26px;
-  background: rgba(11, 12, 14, 0.2);
-}
-
-.circuit::before {
-  left: 0;
-}
-
-.circuit::after {
-  right: 0;
-}
-
-@keyframes traceFlow {
-  to {
-    background-position: 46px 0;
-  }
-}
-
-/* ---------- stops ---------- */
-
-.circuit-stops {
-  position: relative;
+.exp-ledger {
+  --gap: clamp(20px, 3vw, 44px);
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  height: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
 }
 
-.stop {
+.exp-year {
   position: relative;
-  height: 100%;
+  min-width: 0;
+}
+
+/* the column rule, centred in the gap */
+.exp-year + .exp-year::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--gap) * -0.5);
+  width: 1px;
+  background: rgba(11, 12, 14, 0.08);
   opacity: 0;
 }
 
-.circuit-wrap.is-in .stop {
-  animation: rise 0.7s var(--ease) both;
-  animation-delay: calc(var(--i, 0) * 80ms);
+.exp-ledger-wrap.is-in .exp-year + .exp-year::before {
+  opacity: 1;
+  transition: opacity 0.9s var(--ease) 0.3s;
 }
 
-.stop-pad {
+/* ---------- year head ---------- */
+
+.exp-year-head {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-bottom: 18px;
+}
+
+/* the timeline rule, extended into the gaps so all three meet */
+.exp-year-head::before {
+  content: '';
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: calc(var(--gap) * -0.5);
+  right: calc(var(--gap) * -0.5);
+  bottom: 0;
+  height: 1px;
+  background: rgba(11, 12, 14, 0.2);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.exp-year:first-child .exp-year-head::before {
+  left: 0;
+}
+
+.exp-year:last-child .exp-year-head::before {
+  right: 0;
+}
+
+.exp-ledger-wrap.is-in .exp-year-head::before {
+  transform: scaleX(1);
+  transition: transform 0.9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 100ms);
+}
+
+/* the pad sits on the rule */
+.exp-year-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3.5px;
   width: 7px;
   height: 7px;
-  translate: -50% -50%;
   border-radius: 50%;
   background: var(--frame);
   border: 1.3px solid rgba(11, 12, 14, 0.35);
-  z-index: 2;
+  z-index: 1;
 }
 
-.stop.is-now .stop-pad {
-  width: 9px;
-  height: 9px;
+.exp-year.is-current .exp-year-head::after {
+  width: 8px;
+  height: 8px;
+  bottom: -4px;
   background: var(--ink);
   border-color: var(--ink);
+  animation: nowPulse 3s ease-in-out infinite;
 }
 
-.stop-leg {
-  position: absolute;
-  left: 50%;
-  width: 1px;
-  height: clamp(30px, 3.4vw, 46px);
-  translate: -50% 0;
-  background: rgba(11, 12, 14, 0.2);
+.exp-year-num {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 9.6vw, 144px);
+  font-weight: 800;
+  font-variation-settings: 'wdth' 100, 'wght' 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.045em;
+  line-height: 0.82;
+  color: var(--ink-2);
+  opacity: 0;
 }
 
-.stop.is-above .stop-leg {
-  bottom: 50%;
+.exp-year.is-current .exp-year-num {
+  color: var(--ink);
 }
 
-.stop.is-below .stop-leg {
-  top: 50%;
+.exp-ledger-wrap.is-in .exp-year-num {
+  animation: rise 0.8s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 120ms);
 }
 
-.stop-body {
-  position: absolute;
-  left: 0;
-  right: 0;
+.exp-now {
+  padding: 3px 8px;
+  border: 1px solid var(--ink);
+  border-radius: var(--r-pill);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.exp-ledger-wrap.is-in .exp-now {
+  animation: fadeIn 0.7s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 260ms);
+}
+
+/* ---------- entries ---------- */
+
+.exp-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding-inline: clamp(4px, 0.8vw, 12px);
+  gap: clamp(10px, 1.1vw, 14px);
+  padding-top: clamp(18px, 2vw, 24px);
 }
 
-.stop.is-above .stop-body {
-  bottom: calc(50% + clamp(30px, 3.4vw, 46px) + 14px);
-}
-
-.stop.is-below .stop-body {
-  top: calc(50% + clamp(30px, 3.4vw, 46px) + 14px);
-}
-
-.stop-year {
-  min-height: 1.4em;
-  margin-bottom: 6px;
-  font-size: 11px;
+.exp-entry {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  font-size: clamp(15px, 1.1vw, 18px);
   font-weight: 500;
-  letter-spacing: 0.1em;
-  color: var(--ink-3);
-}
-
-.stop-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: clamp(13px, 1.02vw, 15.5px);
-  font-weight: 600;
   letter-spacing: -0.012em;
-  line-height: 1.3;
+  line-height: 1.35;
+  color: var(--ink);
+  opacity: 0;
+  text-wrap: pretty;
 }
 
-.stop-icon {
+.exp-ledger-wrap.is-in .exp-entry {
+  animation: rise 0.6s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 260ms);
+}
+
+.exp-entry-icon {
   display: inline-flex;
-  flex: none;
-  width: 14px;
-  height: 14px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
   color: var(--ink-3);
 }
 
-.stop-icon svg {
-  width: 100%;
-  height: 100%;
+.exp-entry-icon svg {
+  width: 15px;
+  height: 15px;
 }
 
-.stop-desc {
-  margin-top: 5px;
-  max-width: 24ch;
-  font-size: clamp(11.5px, 0.84vw, 13px);
-  line-height: 1.5;
-  color: var(--ink-2);
+.exp-entry-dot {
+  width: 5px;
+  height: 5px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--ink-3);
 }
 
-/* ---------- the board turns upright on small screens ---------- */
+.exp-entry-title {
+  min-width: 0;
+}
 
-@media (max-width: 900px) {
-  .circuit {
-    height: auto;
+/* ---------- the ledger turns upright on small screens ---------- */
+
+@media (max-width: 980px) {
+  .exp-ledger {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
-  .circuit-trace {
-    left: 7px;
-    right: auto;
-    top: 6px;
-    bottom: 0;
-    width: 1px;
-    height: auto;
+  .exp-year {
+    padding-bottom: clamp(30px, 4vw, 44px);
   }
 
-  .circuit-trace::after {
-    background-image: repeating-linear-gradient(
-      180deg,
-      rgba(11, 12, 14, 0.5) 0 7px,
-      transparent 7px 40px
-    );
-    background-size: 1px 40px;
-    animation: traceFlowY 5.5s linear infinite;
-  }
-
-  .circuit::before,
-  .circuit::after {
-    top: 6px;
-    width: 12px;
-    height: 1px;
-  }
-
-  .circuit::before {
-    left: 7px;
-  }
-
-  .circuit::after {
-    right: auto;
-    left: 7px;
-    top: auto;
-    bottom: 4px;
-  }
-
-  .circuit-stops {
-    display: block;
-    height: auto;
-  }
-
-  .stop {
-    height: auto;
-    padding-bottom: 30px;
-  }
-
-  .stop:last-child {
+  .exp-year:last-child {
     padding-bottom: 0;
   }
 
-  .stop-pad {
-    left: 7px;
-    top: 11px;
+  .exp-year + .exp-year::before {
+    display: none;
   }
 
-  .stop-leg {
-    left: 7px;
-    top: 11px;
-    bottom: auto;
-    width: 20px;
-    height: 1px;
-    translate: 0 -50%;
+  .exp-year-head::before {
+    left: 0;
+    right: 0;
   }
 
-  .stop.is-above .stop-leg,
-  .stop.is-below .stop-leg {
-    bottom: auto;
-    top: 11px;
-  }
-
-  .stop-body,
-  .stop.is-above .stop-body,
-  .stop.is-below .stop-body {
-    position: static;
-    align-items: flex-start;
-    text-align: left;
-    padding: 0 0 0 34px;
-  }
-
-  .stop-title {
-    justify-content: flex-start;
-  }
-
-  .stop-desc {
-    max-width: 42ch;
+  .exp-year-num {
+    font-size: clamp(52px, 12vw, 84px);
   }
 }
 
-@keyframes traceFlowY {
+@media (max-width: 620px) {
+  .exp-year-num {
+    font-size: clamp(48px, 14vw, 72px);
+  }
+
+  .exp-now {
+    font-size: 9px;
+  }
+
+  .exp-entry {
+    font-size: 15px;
+  }
+}
+
+@keyframes fadeIn {
   to {
-    background-position: 0 40px;
+    opacity: 1;
+  }
+}
+
+@keyframes nowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(11, 12, 14, 0.18);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(11, 12, 14, 0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stop {
+  .exp-year-num,
+  .exp-now,
+  .exp-entry {
     opacity: 1;
     animation: none !important;
   }
 
-  .circuit-trace::after {
+  .exp-year-head::before {
+    transform: none;
+    transition: none;
+  }
+
+  .exp-year + .exp-year::before {
+    opacity: 1;
+    transition: none;
+  }
+
+  .exp-year.is-current .exp-year-head::after {
     animation: none;
   }
 }

@@ -1,22 +1,43 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useActiveSection } from '../lib/hooks'
 import { resume } from '../data/content'
 import { GitHubIcon, LinkedInIcon } from './icons'
+
+const SECTIONS = ['projects', 'experience'] as const
 
 export function Nav() {
   const { pathname } = useLocation()
   const onHome = pathname === '/'
+  const activeSection = useActiveSection(SECTIONS)
+
+  const projectsActive = pathname.startsWith('/work') || (onHome && activeSection === 'projects')
+  const experienceActive = onHome && activeSection === 'experience'
+  const resumeActive = pathname === '/resume'
+  const linkClass = (active: boolean) => `nav-link${active ? ' is-active' : ''}`
 
   return (
     <div className="nav-wrap">
       <nav className="nav" aria-label="Primary">
         <div className="nav-links">
-          <a className="nav-link" href={onHome ? '#projects' : '/#projects'}>
+          <a
+            className={linkClass(projectsActive)}
+            href={onHome ? '#projects' : '/#projects'}
+            aria-current={projectsActive ? 'location' : undefined}
+          >
             Projects
           </a>
-          <a className="nav-link" href={onHome ? '#experience' : '/#experience'}>
+          <a
+            className={linkClass(experienceActive)}
+            href={onHome ? '#experience' : '/#experience'}
+            aria-current={experienceActive ? 'location' : undefined}
+          >
             Experience
           </a>
-          <Link className="nav-link" to="/resume">
+          <Link
+            className={linkClass(resumeActive)}
+            to="/resume"
+            aria-current={resumeActive ? 'page' : undefined}
+          >
             Resume
           </Link>
         </div>

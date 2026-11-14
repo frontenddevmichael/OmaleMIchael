@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Layout harness</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #e4e4e1;
+      }
+
+      iframe {
+        display: block;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe id="app" src="/"></iframe>
+    <script>
+      const params = new URLSearchParams(location.search)
+      const width = Number(params.get('w') || 1280)
+      const height = Number(params.get('h') || 1000)
+      const section = params.get('section') || 'experience'
+      const frame = document.getElementById('app')
+
+      frame.style.width = `${width}px`
+      frame.style.height = `${height}px`
+
+      frame.addEventListener('load', () => {
+        const doc = frame.contentDocument
+        const win = frame.contentWindow
+
+        if (!doc || !win) return
+
+        const style = doc.createElement('style')
+        style.textContent = `
+          html { scroll-behavior: auto !important; }
+          .reveal { opacity: 1 !important; translate: none !important; transition: none !important; }
+          .exp-year-num, .exp-now, .exp-entry { opacity: 1 !important; animation: none !important; }
+          .exp-year-head::before { transform: scaleX(1) !important; transition: none !important; }
+          .exp-year + .exp-year::before { opacity: 1 !important; transition: none !important; }
+          .resume-grid.is-in .resume-stack { animation: none !important; }
+          *, *::before, *::after {
+            animation-duration: 0s !important;
+            animation-delay: 0s !important;
+            transition-duration: 0s !important;
+            transition-delay: 0s !important;
+          }
+        `
+        doc.head.appendChild(style)
+
+        window.setTimeout(() => {
+          const target = doc.getElementById(section)
+          if (!target) return
+          const top = target.getBoundingClientRect().top + win.scrollY - 100
+          win.scrollTo(0, Math.max(0, top))
+        }, 350)
+      })
+    </script>
+  </body>
+</html>

@@ -85,6 +85,14 @@
   --stack-y: -14px;
 }
 
+.folder:nth-child(5) {
+  --stack-y: 8px;
+}
+
+.folder:nth-child(6) {
+  --stack-y: -8px;
+}
+
 .folder:hover,
 .folder:focus-visible {
   z-index: calc(var(--z, 1) + 20);
@@ -275,33 +283,106 @@
   }
 }
 
-/* ---------- small screens ---------- */
+/* ---------- tablet: two rows of three ---------- */
 
-@media (max-width: 860px) {
+@media (max-width: 1080px) {
+  .work-doodle-wrap {
+    display: none;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1080px) {
+  .stage {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    padding-block: clamp(16px, 2.4vw, 26px) 0;
+  }
+
+  .folder {
+    width: calc((100% - 2.2%) / 3);
+    margin-left: 0;
+  }
+
+  .folder + .folder {
+    margin-left: 0;
+  }
+
+  .folder:nth-child(3n + 2),
+  .folder:nth-child(3n) {
+    margin-left: -1.4%;
+  }
+
+  .folder:nth-child(n + 4) {
+    margin-top: -1.2%;
+  }
+
+  .folder:nth-child(odd),
+  .folder:nth-child(even) {
+    --stack-x: 0px;
+  }
+
+  .folder-content {
+    top: 34%;
+    gap: 6px;
+  }
+
+  .folder-name {
+    font-size: clamp(19px, 2.2vw, 26px);
+  }
+
+  .folder-meta {
+    gap: 8px;
+  }
+
+  .folder-arrow {
+    width: 26px;
+    margin-left: auto;
+  }
+
+  .folder-status {
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+  }
+
+  .folder-lead {
+    font-size: 8.5px;
+    padding: 2px 6px;
+  }
+
+  .folder-tab-word {
+    font-size: 10px;
+  }
+}
+
+/* ---------- phone: a tighter fan ---------- */
+
+@media (max-width: 640px) {
   .stage {
     flex-direction: column;
     align-items: center;
     min-height: 0;
-    padding-top: 26px;
+    padding-top: 24px;
     padding-bottom: 0;
   }
 
   .folder {
-    width: min(94%, 460px);
+    width: min(96%, 460px);
   }
 
   .folder + .folder {
-    margin-top: clamp(-96px, -10vw, -62px);
+    margin-top: -44px;
     margin-left: 0;
   }
 
   .folder:nth-child(odd) {
-    --stack-x: calc(-1 * clamp(10px, 2vw, 26px));
+    --stack-x: calc(-1 * clamp(6px, 1.6vw, 14px));
     --stack-y: 0px;
   }
 
   .folder:nth-child(even) {
-    --stack-x: clamp(10px, 2vw, 26px);
+    --stack-x: clamp(6px, 1.6vw, 14px);
     --stack-y: 0px;
   }
 
@@ -311,31 +392,24 @@
   }
 
   .folder-name {
-    font-size: clamp(27px, 7vw, 36px);
+    font-size: clamp(25px, 7vw, 32px);
   }
 
   .folder-arrow {
     margin-left: auto;
+    width: 30px;
   }
 
   .folder-status {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .folder-tab-word {
-    font-size: 11px;
-  }
-
-  .folder-arrow {
-    width: 32px;
+    font-size: 10.5px;
   }
 
   .folder-lead {
-    font-size: 9.5px;
-  }
-
-  .work-doodle-wrap {
-    display: none;
+    font-size: 9px;
   }
 }
 

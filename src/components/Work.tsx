@@ -20,6 +20,8 @@ function ProjectFolder({ project, index }: { project: Project; index: number }) 
   const backGradient = `folder-back-${uid}`
   const frontGradient = `folder-front-${uid}`
 
+  /* no aria-label on purpose: the card's own words are the accessible name,
+     so screen readers hear exactly what the card shows */
   return (
     <Link
       to={`/work/${project.slug}`}
@@ -31,7 +33,6 @@ function ProjectFolder({ project, index }: { project: Project; index: number }) 
           '--i': index,
         } as CSSProperties
       }
-      aria-label={`${project.name}, ${project.year}. ${project.status}.${project.lead ? ' Lead project.' : ''} Open case study.`}
     >
       <span className="folder-back-art" aria-hidden="true">
         <svg
